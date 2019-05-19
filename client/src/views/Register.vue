@@ -57,7 +57,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(['USER_LOGIN', "SET_ROLE"]),
+    ...mapMutations(['USER_LOGIN', 'SET_ROLE']),
     userRegister() {
       const data = {
         username: this.username,

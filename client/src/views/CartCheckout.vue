@@ -85,17 +85,22 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
-import ImageFrame from "@/components/ImageFrame";
+import { mapState, mapActions, mapMutations } from 'vuex';
+import ImageFrame from '@/components/ImageFrame';
 import backend from '@/api/backend';
 
 export default {
-  name: "CartCheckout",
+  name: 'CartCheckout',
   components: {
-    ImageFrame
+    ImageFrame,
   },
   created() {
     this.fetchCartItem(this.$route.params.id);
+    // .then((cart) => {
+    //   console.log(cart, 'views');
+    //   this.cartItem = cart;
+    //   console.log(this.cartItem, 'this views');
+    // })
     this.fetchListOfProvinces();
   },
   data() {
@@ -104,19 +109,18 @@ export default {
       selectedCity: null,
       cityCode: null,
       deliveryFee: 0,
-      userAddress: "",
-      userContact: ""
+      userAddress: '',
+      userContact: '',
     };
   },
   methods: {
     ...mapActions([
-      "fetchCartItem",
-      "fetchListOfProvinces",
-      "fetchListOfCities"
+      'fetchCartItem',
+      'fetchListOfProvinces',
+      'fetchListOfCities',
     ]),
     ...mapMutations(['REMOVE_CART_ITEM']),
     getDeliveryFee() {
-
       backend({
         method: 'POST',
         url: '/deliveries/cost',
@@ -138,29 +142,28 @@ export default {
         userContact: this.userContact,
         totalCharge: this.totalCharge,
       };
-      if(this.deliveryFee) {
+      if (this.deliveryFee) {
         backend({
-        method: 'POST',
-        url: '/transactions',
-        headers: { Authorization: localStorage.getItem('accessToken') },
-        data,
-      })
-        .then(({ data }) => {
-         this.REMOVE_CART_ITEM(id);
-         this.$router.push({ name: 'cart' });
-         alertify.success('Success, thank you for your purchase!');
+          method: 'POST',
+          url: '/transactions',
+          headers: { Authorization: localStorage.getItem('accessToken') },
+          data,
         })
-        .catch((error) => {
-          console.log(error.response.data.message);
-        });
+          .then(({ data }) => {
+            this.REMOVE_CART_ITEM(id);
+            this.$router.push({ name: 'cart' });
+            alertify.success('Success, thank you for your purchase!');
+          })
+          .catch((error) => {
+            alertify.error('Not enough item, please try again later');
+          });
       } else {
-        alertify.error('Please get delivery quote first');
+        alertify.error('Please get your delivery detail first');
       }
-      
     },
   },
   computed: {
-    ...mapState(["cartItem", "provinces", "cities"]),
+    ...mapState(['cartItem', 'provinces', 'cities']),
     totalCharge() {
       return this.cartItem.amount + this.deliveryFee;
     },
@@ -173,8 +176,8 @@ export default {
       return converter.format(this.totalCharge);
     },
     cityList() {
-      return this.cities.map(city => city.split("|")[1]);
-    }
+      return this.cities.map(city => city.split('|')[1]);
+    },
   },
   watch: {
     $route(value) {
@@ -186,14 +189,14 @@ export default {
     },
     selectedCity(value) {
       const regex = new RegExp(`^${value}$`, 'i');
-      
-      this.cities.forEach(city => {
+
+      this.cities.forEach((city) => {
         if (city.split('|')[1].match(regex)) {
-          this.cityCode = city.split('|')[0]
-        };
+          this.cityCode = city.split('|')[0];
+        }
       });
     },
-  }
+  },
 };
 </script>
 

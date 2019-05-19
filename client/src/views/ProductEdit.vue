@@ -61,25 +61,25 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-import backend from "@/api/backend";
-import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+import { mapState, mapActions } from 'vuex';
+import backend from '@/api/backend';
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
 export default {
-  name: "ProductEdit",
+  name: 'ProductEdit',
   components: {
-    PulseLoader
+    PulseLoader,
   },
   data() {
     return {
-      name: "",
-      price: "",
-      stock: "",
-      description: "",
-      imageName: "",
-      imageFile: "",
-      imageUrl: "",
-      isLoading: false
+      name: '',
+      price: '',
+      stock: '',
+      description: '',
+      imageName: '',
+      imageFile: '',
+      imageUrl: '',
+      isLoading: false,
     };
   },
   created() {
@@ -91,36 +91,36 @@ export default {
     });
   },
   methods: {
-    ...mapActions(["fetchProduct"]),
+    ...mapActions(['fetchProduct']),
     editProduct() {
       this.isLoading = true;
 
       this.imageUrl = this.imageFile ? null : this.product.url;
 
       const data = new FormData();
-      data.append("name", this.name);
-      data.append("price", this.price);
-      data.append("stock", this.stock);
-      data.append("description", this.description);
-      data.append("imageUrl", this.imageUrl);
-      data.append("image", this.imageFile);
+      data.append('name', this.name);
+      data.append('price', this.price);
+      data.append('stock', this.stock);
+      data.append('description', this.description);
+      data.append('imageUrl', this.imageUrl);
+      data.append('image', this.imageFile);
 
       backend({
-        method: "PUT",
+        method: 'PUT',
         url: `/products/${this.$route.params.id}`,
-        headers: { Authorization: localStorage.getItem("accessToken") },
-        data
+        headers: { Authorization: localStorage.getItem('accessToken') },
+        data,
       })
         .then(() => {
-          this.name = "";
+          this.name = '';
           this.price = 0;
           this.stock = 1;
-          this.information = "";
-          this.imageName = "";
-          this.imageFile = "";
+          this.information = '';
+          this.imageName = '';
+          this.imageFile = '';
           this.isLoading = false;
-          this.$router.push({ name: "home" });
-          alertify.success("Your product has been successfuly edited");
+          this.$router.push({ name: 'home' });
+          alertify.success('Your product has been successfuly edited');
         })
         .catch(({ response }) => {
           this.isLoading = false;
@@ -128,8 +128,8 @@ export default {
             alertify.error(response.data.message);
           }
           this.$router.push({
-            name: "edit-product",
-            params: { id: this.$route.params.id }
+            name: 'edit-product',
+            params: { id: this.$route.params.id },
           });
         });
     },
@@ -142,24 +142,24 @@ export default {
       if (files[0] !== undefined) {
         this.imageName = files[0].name;
 
-        if (this.imageName.lastIndexOf(".") <= 0) {
-          return "";
+        if (this.imageName.lastIndexOf('.') <= 0) {
+          return '';
         }
         const fr = new FileReader();
 
         fr.readAsDataURL(files[0]);
-        fr.addEventListener("load", () => {
+        fr.addEventListener('load', () => {
           this.imageFile = files[0];
         });
       } else {
-        this.imageName = "";
-        this.imageFile = "";
+        this.imageName = '';
+        this.imageFile = '';
       }
-    }
+    },
   },
   computed: {
-    ...mapState(["product"])
-  }
+    ...mapState(['product']),
+  },
 };
 </script>
 <style>

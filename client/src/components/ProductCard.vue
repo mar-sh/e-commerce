@@ -78,7 +78,7 @@ export default {
     },
     productAvailability() {
       return this.product.stock > 0 ? this.product.stock : 'Out of stock';
-    }
+    },
   },
 };
 </script>

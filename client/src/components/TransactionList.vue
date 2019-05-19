@@ -38,102 +38,113 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import moment from "moment";
-import backend from "@/api/backend";
+import { mapActions } from 'vuex';
+import moment from 'moment';
+import backend from '@/api/backend';
 
 export default {
-  name: "TransactionList",
+  name: 'TransactionList',
   props: {
     transactions: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   methods: {
     formatDate(date) {
-      return moment(date).format("LL");
+      return moment(date).format('LL');
     },
     deliveryStatus(status) {
-      return status === "delivering"
-        ? "orange"
-        : status === "delivered"
-        ? "blue"
-        : "green";
+      return status === 'delivering'
+        ? 'orange'
+        : status === 'delivered'
+          ? 'blue'
+          : 'green';
     },
     confirmDelivery(id) {
-      backend({
-        method: "PATCH",
-        url: `/transactions/${id}`,
-        headers: { Authorization: localStorage.getItem("accessToken") },
-        data: {
-          status: "delivered"
-        }
-      })
-        .then(({ data }) => {
-          this.$emit("fetch-tx");
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      alertify.confirm(
+        'Confirm delivery',
+        'Mark as delivered ?',
+        () => {
+          backend({
+            method: 'PATCH',
+            url: `/transactions/${id}`,
+            headers: { Authorization: localStorage.getItem('accessToken') },
+            data: {
+              status: 'delivered',
+            },
+          })
+            .then(({ data }) => {
+              alertify.success('Success, product marked as delivered!');
+              this.$emit('fetch-tx');
+            })
+            .catch((err) => {
+              alertify.error('Something went wrong');
+              console.log(err);
+            });
+        },
+        () => {
+          alertify.message('Cancelled');
+        },
+      );
     },
     confirmCompletion(id) {
       alertify.confirm(
-        "Confirm delivery",
-        "Mark this as delivered?",
+        'Confirm delivery',
+        'Have you received your item?',
         () => {
-          this.$emit("fetch-tx");
+          this.$emit('fetch-tx');
           backend({
-            method: "PATCH",
+            method: 'PATCH',
             url: `/transactions/${id}`,
-            headers: { Authorization: localStorage.getItem("accessToken") },
+            headers: { Authorization: localStorage.getItem('accessToken') },
             data: {
-              status: "completed",
-              confirmed: "true"
-            }
+              status: 'completed',
+              confirmed: 'true',
+            },
           })
             .then(({ data }) => {
-              this.$emit("fetch-tx");
+              alertify.success('Great, hope you enjoy it!');
+              this.$emit('fetch-tx');
             })
-            .catch(err => {
+            .catch((err) => {
               console.log(err);
               alertify.error('something went wrong');
             });
         },
         () => {
-          alertify.message("Canceled");
-        }
+          alertify.message('Canceled');
+        },
       );
 
-      this.$emit("fetch-tx");
-      backend({
-        method: "PATCH",
-        url: `/transactions/${id}`,
-        headers: { Authorization: localStorage.getItem("accessToken") },
-        data: {
-          status: "completed",
-          confirmed: "true"
-        }
-      })
-        .then(({ data }) => {
-          this.$emit("fetch-tx");
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      // this.$emit("fetch-tx");
+      // backend({
+      //   method: "PATCH",
+      //   url: `/transactions/${id}`,
+      //   headers: { Authorization: localStorage.getItem("accessToken") },
+      //   data: {
+      //     status: "completed",
+      //     confirmed: "true"
+      //   }
+      // })
+      //   .then(({ data }) => {
+      //     this.$emit("fetch-tx");
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   });
     },
     displayDateMessage(status, created, updated) {
-      if (status !== "completed") {
+      if (status !== 'completed') {
         return `Checkout time: ${this.formatDate(created)}`;
-      } else {
-        return `Delivered: ${this.formatDate(updated)}`;
       }
-    }
+      return `Delivered: ${this.formatDate(updated)}`;
+    },
   },
   computed: {
     isAdmin() {
-      return this.$route.path === "/admin/dashboard";
-    }
-  }
+      return this.$route.path === '/admin/dashboard';
+    },
+  },
 };
 </script>
 

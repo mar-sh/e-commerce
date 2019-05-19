@@ -6,6 +6,7 @@ const authMiddleware = require('../middlewares/auth');
 const {
   userAuthentication,
   cartAuthorization,
+  adminAuthorization,
 } = authMiddleware;
 
 const {
@@ -21,7 +22,7 @@ const router = express.Router();
 router.post('/', userAuthentication, postCreateCart);
 router.get('/', userAuthentication, getAllCarts);
 router.get('/:id', userAuthentication, cartAuthorization, getCartById);
-router.delete('/', userAuthentication, deleteAllCarts);
+router.delete('/', userAuthentication, adminAuthorization, deleteAllCarts);
 router.delete('/:id', userAuthentication, cartAuthorization, deleteCartById);
 
 module.exports = router;

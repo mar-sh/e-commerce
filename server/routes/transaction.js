@@ -17,9 +17,11 @@ const {
 
 const router = express.Router();
 
-router.post('/', userAuthentication, postCreateTransaction);
-router.get('/admin', userAuthentication, adminAuthorization, getAllTransactions);
-router.get('/', userAuthentication, getUserTranscations);
-router.patch('/:id', userAuthentication, patchEditTransactionStatus);
+router.use(userAuthentication);
+
+router.post('/', postCreateTransaction);
+router.get('/admin', adminAuthorization, getAllTransactions);
+router.get('/', getUserTranscations);
+router.patch('/:id', patchEditTransactionStatus);
 
 module.exports = router;

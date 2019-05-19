@@ -24,6 +24,9 @@ const errorCode = (errorMessage) => {
     case 'Cart not found':
       return 404;
 
+    case 'Not enough item':
+      return 422;
+      
     default:
       return 500;
   };

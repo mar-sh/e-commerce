@@ -30,6 +30,20 @@ const transactionSchema = new Schema({
   },
 }, { timestamps: true });
 
+transactionSchema.pre('save', function(next) {
+  const cartId = this.cartId;
+
+  Cart.findById(cartId)
+    .populate('productId')
+    .then((cart) => {
+      if(cart.productId.stock < cart.quantity) {
+        next('Not enough item')
+      } else {
+        next();
+      }
+    })
+})
+
 transactionSchema.post('save', function(doc) {
   const cartId = doc.cartId;
   

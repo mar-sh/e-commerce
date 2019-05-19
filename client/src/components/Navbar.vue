@@ -26,7 +26,7 @@
     </v-toolbar-items>
 
     <v-toolbar-items id="menu" v-else>
-      
+
       <v-btn v-show="authenticated && !user" flat depressed small @click.prevent="goAdminPage">Dashboard</v-btn>
       <v-divider vertical inset dark></v-divider>
       <v-btn v-show="authenticated && user" flat depressed small @click.prevent="goTransactionPage">My transactions</v-btn>
@@ -54,7 +54,7 @@ export default {
     return {};
   },
   created() {
-    
+
   },
   methods: {
     ...mapMutations(['USER_LOGOUT', 'CLEAR_CART', 'SET_ROLE']),
@@ -92,9 +92,9 @@ export default {
     ...mapState(['authenticated', 'role']),
     user() {
       return (this.role === 'user');
-    }
+    },
   },
-  
+
 };
 </script>
 

@@ -26,7 +26,7 @@
             :price="product.price"
             :disabled="(product.stock < 1)"
           ></AddCartButton>
-          <v-layout v-show="!user" row wrap justify-space-between>
+          <v-layout v-show="admin" row wrap justify-space-between>
             <v-btn flat depressed color="warning" @click.prevent="goEditProduct(product._id)">EDIT</v-btn>
             <v-btn flat depressed color="error" @click.prevent="goDeleteProduct(product._id)">DELETE</v-btn>
           </v-layout>
@@ -37,41 +37,41 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-import ProductCard from "@/components/ProductCard";
-import AddCartButton from "@/components/AddCartButton";
+import { mapState, mapActions } from 'vuex';
+import ProductCard from '@/components/ProductCard';
+import AddCartButton from '@/components/AddCartButton';
 
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
     ProductCard,
-    AddCartButton
+    AddCartButton,
   },
   data() {
     return {
-      keyword: "",
+      keyword: '',
       searched: [],
-      message: ""
+      message: '',
     };
   },
   created() {
     this.fetchProducts();
   },
   methods: {
-    ...mapActions(["fetchProducts", "deleteProduct"]),
+    ...mapActions(['fetchProducts', 'deleteProduct']),
     productSearch() {
-      const regex = new RegExp(this.keyword, "ig");
+      const regex = new RegExp(this.keyword, 'ig');
 
       this.searched = this.products.filter(v => v.name.match(regex));
       if (!this.searched.length) {
-        this.message = "Sorry, we found nothing :(((";
+        this.message = 'Sorry, we found nothing :(((';
       } else {
-        this.message = "";
+        this.message = '';
       }
     },
     clearKeyword() {
-      this.keyword = "";
-      this.message = "";
+      this.keyword = '';
+      this.message = '';
       this.searched = [];
     },
     goEditProduct(id) {
@@ -80,21 +80,21 @@ export default {
     },
     goDeleteProduct(id) {
       alertify.confirm(
-        "Confirm removal",
-        "Are you sure you want to delete this product ?",
+        'Confirm removal',
+        'Are you sure you want to delete this product ?',
         () => {
           this.deleteProduct(id);
-          this.$router.push({ name: "home" });
-          alertify.success("Deleted");
+          this.$router.push({ name: 'home' });
+          alertify.success('Deleted');
         },
         () => {
-          alertify.message("Canceled");
-        }
+          alertify.message('Canceled');
+        },
       );
     },
   },
   computed: {
-    ...mapState(["products", "role"]),
+    ...mapState(['products', 'role']),
     displayProducts() {
       if (this.searched && this.searched.length) {
         return this.searched;
@@ -102,9 +102,12 @@ export default {
       return this.products;
     },
     user() {
-      return this.role === "user";
-    }
-  }
+      return this.role === 'user';
+    },
+    admin() {
+      return (localStorage.getItem('role') === '@12M1n!');
+    },
+  },
 };
 </script>
 

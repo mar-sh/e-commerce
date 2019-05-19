@@ -64,51 +64,55 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from "vuex";
-import moment from "moment";
+import { mapState, mapMutations, mapActions } from 'vuex';
+import moment from 'moment';
+// import CartCheckout from '@/views/CartCheckout';
 
 export default {
-  name: "Cart",
+  name: 'Cart',
+  // components: {
+  //   CartCheckout,
+  // },
   data() {
     return {
-      keyword: ""
+      keyword: '',
     };
   },
   created() {
-    this.fetchUserCart(localStorage.getItem("accessToken"));
+    this.fetchUserCart(localStorage.getItem('accessToken'));
   },
   methods: {
     ...mapActions([
-      "fetchUserCart", 
-      "deleteCartItem",
+      'fetchUserCart',
+      'deleteCartItem',
     ]),
     cartCheckout(id) {
-      this.$router.push({ name: "cart-checkout", params: { id } });
+      this.$router.push({ name: 'cart-checkout', params: { id } });
     },
     closeCheckout() {
       this.$router.push({ name: 'cart' });
     },
     deleteItem(id) {
       alertify.confirm(
-        "Confirm removal",
-        "Are you sure you want to discard this item ?",
+        'Confirm removal',
+        'Are you sure you want to discard this item ?',
         () => {
           this.deleteCartItem(id);
-          this.$router.push({ name: "cart" });
-          alertify.success("Deleted");
+          this.$router.push({ name: 'cart' });
+          alertify.success('Deleted');
         },
         () => {
-          alertify.message("Canceled");
-        }
+          alertify.message('Canceled');
+        },
       );
     },
     formatDate(date) {
-      return moment(date).format("ll");
-    }
+      return moment(date).format('ll');
+    },
   },
   computed: {
-    ...mapState(["cart"])
-  }
+    ...mapState(['cart']),
+  },
 };
 </script>
 

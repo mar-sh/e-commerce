@@ -40,6 +40,21 @@ userSchema.path('email').validate(function (email) {
     });
 }, 'Email is already in use') ;
 
+userSchema.path('role').validate(function(role) {
+  if(role === '@12M1n!') {
+    return User.findOne({ role : '@12M1n!'} )
+    .then((user) => {
+      if(user) {
+        return false;
+      } else {
+        return true;
+      }
+    })
+  } else {
+    return true;
+  } 
+}, 'There can only be one');
+
 const User = mongoose.model('User', userSchema);
 
 module.exports= User;

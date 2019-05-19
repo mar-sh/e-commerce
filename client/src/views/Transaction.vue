@@ -9,7 +9,7 @@
             <v-spacer></v-spacer>
           </v-toolbar>
           <TransactionList :transactions="transactions" @fetch-tx="fetchTransactions">
-            
+
           </TransactionList>
         </v-card>
       </v-flex>
@@ -19,27 +19,27 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-import TransactionList from "@/components/TransactionList";
-import moment from "moment";
+import { mapState, mapActions } from 'vuex';
+import TransactionList from '@/components/TransactionList';
+import moment from 'moment';
 
 export default {
-  name: "Transaction",
+  name: 'Transaction',
   components: {
-    TransactionList
+    TransactionList,
   },
   created() {
     this.fetchTransactions();
   },
   methods: {
-    ...mapActions(["fetchTransactions"]),
+    ...mapActions(['fetchTransactions']),
     formatDate(date) {
-      return moment(date).format("LL");
-    }
+      return moment(date).format('LL');
+    },
   },
   computed: {
-    ...mapState(["transactions"])
-  }
+    ...mapState(['transactions']),
+  },
 };
 </script>
 

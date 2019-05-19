@@ -12,7 +12,7 @@ export default {
     state.products = [...payload];
   },
   SET_PRODUCT_DETAIL(state, payload) {
-    state.productDetail = payload;
+    state.productDetail = { ...payload };
   },
   SET_PRODUCT_EDIT(state, payload) {
     state.product = payload;
@@ -27,7 +27,7 @@ export default {
     state.cart.push(payload);
   },
   ASSIGN_CART_ITEM(state, payload) {
-    state.cartItem = { payload };
+    state.cartItem = { ...payload };
   },
   REMOVE_CART_ITEM(state, payload) {
     state.cart = state.cart.filter(item => item._id !== payload);
