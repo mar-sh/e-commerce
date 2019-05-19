@@ -6,6 +6,7 @@ const { verifyPassword } = require('../helpers/entry');
 class EntryController {
 
   static postUserRegister(req, res, next) {
+    const role = req.body.role ? req.body.role : 'user';
     const {
       username,
       email,
@@ -16,6 +17,7 @@ class EntryController {
       username,
       email,
       password,
+      role,
     });
 
     newUser.save()
@@ -23,6 +25,7 @@ class EntryController {
         const accessToken = createAccessToken({
           id: user._id,
           email: user.email,
+          role: user.role,
         });
 
         res.status(201).json({
@@ -30,6 +33,7 @@ class EntryController {
           currentUser: {
             userId: user._id,
             email: user.email,
+            role: user.role,
           },
         });
       })
@@ -50,6 +54,7 @@ class EntryController {
           const accessToken = createAccessToken({
             id: user._id,
             email: user.email,
+            role: user.role,
           });
 
           res.status(200).json({
@@ -57,6 +62,7 @@ class EntryController {
             currentUser: {
               userId: user._id,
               email: user.email,
+              role: user.role,
             },
           });
         } else {

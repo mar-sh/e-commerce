@@ -32,7 +32,7 @@
                 <v-divider light class="pb-2 pt-1"></v-divider>
                 <span>Price: {{ priceFormat }}</span>
                 <br>
-                <span>Stock Available: {{ product.stock }}</span>
+                <span>Stock Available: {{ productAvailability }}</span>
                 <br>
                 <span>Description: {{ product.description }}</span>
                 <br>
@@ -76,6 +76,9 @@ export default {
       });
       return converter.format(this.product.price);
     },
+    productAvailability() {
+      return this.product.stock > 0 ? this.product.stock : 'Out of stock';
+    }
   },
 };
 </script>

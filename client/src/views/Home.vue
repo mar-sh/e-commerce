@@ -19,16 +19,17 @@
       <v-layout row wrap>
         <ProductCard v-for="(product) in displayProducts" :key="product._id" :product="product">
           <AddCartButton
+            v-show="user"
             :quantity="1"
             :product-id="product._id"
             :seller-id="product.sellerId"
             :price="product.price"
+            :disabled="(product.stock < 1)"
           ></AddCartButton>
-          <!-- <v-layout row wrap justify-space-between>
-        <v-btn>EDIT</v-btn>
-        <v-btn>DELETE</v-btn>
-
-          </v-layout>-->
+          <v-layout v-show="!user" row wrap justify-space-between>
+            <v-btn flat depressed color="warning" @click.prevent="goEditProduct(product._id)">EDIT</v-btn>
+            <v-btn flat depressed color="error" @click.prevent="goDeleteProduct(product._id)">DELETE</v-btn>
+          </v-layout>
         </ProductCard>
       </v-layout>
     </v-container>
@@ -36,57 +37,74 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import ProductCard from '@/components/ProductCard';
-import AddCartButton from '@/components/AddCartButton';
+import { mapState, mapActions } from "vuex";
+import ProductCard from "@/components/ProductCard";
+import AddCartButton from "@/components/AddCartButton";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     ProductCard,
-    AddCartButton,
+    AddCartButton
   },
   data() {
     return {
-      keyword: '',
+      keyword: "",
       searched: [],
-      message: '',
+      message: ""
     };
   },
   created() {
     this.fetchProducts();
   },
   methods: {
-    ...mapActions(['fetchProducts']),
+    ...mapActions(["fetchProducts", "deleteProduct"]),
     productSearch() {
-      const regex = new RegExp(this.keyword, 'ig');
+      const regex = new RegExp(this.keyword, "ig");
 
       this.searched = this.products.filter(v => v.name.match(regex));
       if (!this.searched.length) {
-        this.message = 'Sorry, we found nothing :(((';
+        this.message = "Sorry, we found nothing :(((";
       } else {
-        this.message = '';
+        this.message = "";
       }
     },
     clearKeyword() {
-      this.keyword = '';
-      this.message = '';
+      this.keyword = "";
+      this.message = "";
+      this.searched = [];
+    },
+    goEditProduct(id) {
+      console.log(id);
+      this.$router.push({ name: 'edit-product', params: { id } });
+    },
+    goDeleteProduct(id) {
+      alertify.confirm(
+        "Confirm removal",
+        "Are you sure you want to delete this product ?",
+        () => {
+          this.deleteProduct(id);
+          this.$router.push({ name: "home" });
+          alertify.success("Deleted");
+        },
+        () => {
+          alertify.message("Canceled");
+        }
+      );
     },
   },
   computed: {
-    ...mapState(['products']),
+    ...mapState(["products", "role"]),
     displayProducts() {
       if (this.searched && this.searched.length) {
         return this.searched;
       }
       return this.products;
     },
-  },
-  // watch: {
-  //   keyword: {
-  //     handler: 'productSearch',
-  //   }
-  // }
+    user() {
+      return this.role === "user";
+    }
+  }
 };
 </script>
 

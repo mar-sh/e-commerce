@@ -8,7 +8,7 @@
       <v-flex xs12 sm6 md9>
         <v-layout justify-space-start column fill-height px-3>
           <div class="px-2 pb-2">
-            <h1 class="headline">Cart Id: {{ cartItem._id }}</h1>
+            <h1 class="headline">Cart ID: {{ cartItem._id }}</h1>
           </div>
           <div class="pa-2">
             <span class="black--text subheading">Item: {{ cartItem.productId.name }}</span>
@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 import ImageFrame from "@/components/ImageFrame";
 import backend from '@/api/backend';
 
@@ -114,6 +114,7 @@ export default {
       "fetchListOfProvinces",
       "fetchListOfCities"
     ]),
+    ...mapMutations(['REMOVE_CART_ITEM']),
     getDeliveryFee() {
 
       backend({
@@ -131,26 +132,31 @@ export default {
         });
     },
     transactionProceed(id) {
-      console.log(id);
       const data = {
         cartId: id,
         userAddress: `${this.userAddress}, ${this.selectedCity}, ${this.selectedProvince}`,
         userContact: this.userContact,
         totalCharge: this.totalCharge,
       };
-
-      backend({
+      if(this.deliveryFee) {
+        backend({
         method: 'POST',
         url: '/transactions',
         headers: { Authorization: localStorage.getItem('accessToken') },
         data,
       })
         .then(({ data }) => {
-          console.log(data);
+         this.REMOVE_CART_ITEM(id);
+         this.$router.push({ name: 'cart' });
+         alertify.success('Success, thank you for your purchase!');
         })
         .catch((error) => {
           console.log(error.response.data.message);
         });
+      } else {
+        alertify.error('Please get delivery quote first');
+      }
+      
     },
   },
   computed: {
@@ -192,8 +198,4 @@ export default {
 </script>
 
 <style scoped>
-.v-list {
-  height: 300px;
-  overflow-y: auto;
-}
 </style>

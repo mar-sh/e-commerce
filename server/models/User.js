@@ -17,7 +17,11 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: [true, 'Password cannot be empty']
-  }
+  },
+  role: {
+    type: String,
+    default: 'user',
+  },
 }, { timestamps: true });
 
 userSchema.pre('save', function(next) {

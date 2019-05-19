@@ -31,7 +31,7 @@ class CartController {
   static getAllCarts(req, res, next) {
     const userId = req.authenticated.id;
 
-    Cart.find({ buyerId: userId })
+    Cart.find({ buyerId: userId, status: 'pending' })
       .populate('productId')
       .then((carts) => {
         res.status(200).json(carts);

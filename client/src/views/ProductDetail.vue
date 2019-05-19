@@ -15,9 +15,9 @@
           </div>
 
           <div class="pa-2">
-            Stock: {{ productDetail.stock }}
+            Stock: {{ productAvailability }}
             <br>
-            <v-layout row>
+            <v-layout row v-if="user">
               <v-flex xs12 md6>
                 Buy: {{ quantity }}
                 <v-slider height="24px" v-model="quantity" :min="1" :max="productDetail.stock"></v-slider>
@@ -30,10 +30,12 @@
           <div class="pa-2">
             <!-- <v-btn block large>ADD TO CART</v-btn> -->
             <AddCartButton
+              v-if="user"
               :quantity="quantity"
               :product-id="productDetail._id"
               :seller-id="productDetail.sellerId"
               :price="productDetail.price"
+              :disabled="(productDetail.stock < 1)"
             ></AddCartButton>
           </div>
           <v-divider></v-divider>
@@ -69,7 +71,7 @@ export default {
     ...mapActions(['fetchProductDetail']),
   },
   computed: {
-    ...mapState(['productDetail']),
+    ...mapState(['productDetail', 'role']),
     priceFormat() {
       const converter = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -82,6 +84,12 @@ export default {
       return moment(this.productDetail.createdAt).format(
         'MMMM Do YYYY, h:mm:ss a',
       );
+    },
+    productAvailability() {
+      return this.productDetail.stock > 0 ? this.productDetail.stock : 'Out of stock';
+    },
+    user() {
+      return (this.role === 'user');
     },
   },
 };

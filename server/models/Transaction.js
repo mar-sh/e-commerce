@@ -24,10 +24,6 @@ const transactionSchema = new Schema({
     type: String,
     default: 'delivering',
   },
-  delivered: {
-    type: String,
-    default: 'false',
-  },
   confirmed: {
     type: String,
     default: 'false',
@@ -40,9 +36,8 @@ transactionSchema.post('save', function(doc) {
   Cart.findById(cartId)
     .populate('productId')
     .then((cart) => {
-      cart.status = 'paid'
-      cart.update()
-        .exec()
+      Cart.findOneAndUpdate({ _id: cart._id }, { status: 'paid' })
+        .exec();
       Product.findOneAndUpdate({ _id: cart.productId._id }, { $inc: { stock: -(cart.quantity) }})
         .exec();
     })

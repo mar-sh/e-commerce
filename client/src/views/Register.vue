@@ -57,7 +57,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(['USER_LOGIN']),
+    ...mapMutations(['USER_LOGIN', "SET_ROLE"]),
     userRegister() {
       const data = {
         username: this.username,
@@ -74,7 +74,9 @@ export default {
           localStorage.setItem('accessToken', data.token);
           localStorage.setItem('user', data.currentUser.userId);
           localStorage.setItem('email', data.currentUser.email);
+          localStorage.setItem('role', data.currentUser.role);
           this.USER_LOGIN();
+          this.SET_ROLE(localStorage.getItem('role'));
           alertify.success('Welcome to ECM');
           this.$router.push({ name: 'home' });
         })

@@ -9,12 +9,15 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     authenticated: false,
+    role: '',
     products: [],
     productDetail: {},
+    product: {},
     cart: [],
     cartItem: {},
     provinces: [],
     cities: [],
+    transactions: [],
   },
   mutations,
   actions,

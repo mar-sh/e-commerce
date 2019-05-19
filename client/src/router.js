@@ -5,8 +5,11 @@ import Register from './views/Register.vue';
 import Login from './views/Login.vue';
 import ProductAdd from './views/ProductAdd.vue';
 import ProductDetail from './views/ProductDetail.vue';
+import ProductEdit from './views/ProductEdit.vue';
 import Cart from './views/Cart.vue';
-import CartCheckout from './components/CartCheckout.vue';
+import CartCheckout from './views/CartCheckout.vue';
+import Transaction from './views/Transaction.vue';
+import AdminDashboard from './views/AdminDashboard.vue';
 
 Vue.use(Router);
 
@@ -40,6 +43,11 @@ export default new Router({
       component: ProductDetail,
     },
     {
+      path: '/edit-product/:id',
+      name: 'edit-product',
+      component: ProductEdit,
+    },
+    {
       path: '/cart',
       name: 'cart',
       component: Cart,
@@ -50,6 +58,16 @@ export default new Router({
           component: CartCheckout,
         },
       ],
+    },
+    {
+      path: '/transactions',
+      name: 'transaction',
+      component: Transaction,
+    },
+    {
+      path: '/admin/dashboard',
+      name: 'dashboard',
+      component: AdminDashboard,
     },
   ],
 });

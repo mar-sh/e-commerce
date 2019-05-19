@@ -56,6 +56,7 @@ class ProductController {
 
     Product.findById(id)
       .then((product) => {
+        console.log(product)
         res.status(200).json(product);
       })
       .catch((error) =>{
@@ -65,7 +66,7 @@ class ProductController {
 
   static putEditProductById(req, res, next) {
     const { id } = req.params;
-
+    console.log(req.body);
     const {
       name,
       stock,

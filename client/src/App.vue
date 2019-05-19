@@ -27,6 +27,7 @@ export default {
   created() {
     if (localStorage.getItem('accessToken')) {
       this.USER_LOGIN();
+      this.SET_ROLE(localStorage.getItem('role'));
       this.fetchUserCart(localStorage.getItem('accessToken'));
     } else {
       this.USER_LOGOUT();
@@ -39,6 +40,7 @@ export default {
     ...mapMutations([
       'USER_LOGIN',
       'USER_LOGOUT',
+      'SET_ROLE',
     ]),
   },
   computed: {

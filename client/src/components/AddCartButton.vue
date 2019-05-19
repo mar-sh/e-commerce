@@ -6,6 +6,7 @@
     block
     outline
     color="secondary"
+    :disabled="disabled"
     @click.prevent="addCart()"
   >Add to Cart</v-btn>
 </template>
@@ -16,7 +17,7 @@ import backend from '@/api/backend';
 
 export default {
   name: 'AddCartButton',
-  props: ['quantity', 'product-id', 'seller-id', 'price'],
+  props: ['quantity', 'product-id', 'seller-id', 'price' ,'disabled', 'label'],
   methods: {
     ...mapMutations([
       'PUSH_NEW_CART_ITEM',
@@ -38,6 +39,7 @@ export default {
         data,
       })
         .then(({ data }) => {
+          alertify.success("Added to cart!")
           this.PUSH_NEW_CART_ITEM(data);
         })
         .catch(({ response }) => {

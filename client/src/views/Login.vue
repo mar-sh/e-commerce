@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     ...mapActions(['fetchUserCart']),
-    ...mapMutations(['USER_LOGIN']),
+    ...mapMutations(['USER_LOGIN', 'SET_ROLE']),
     userLogin() {
       backend({
         method: 'POST',
@@ -64,8 +64,10 @@ export default {
           localStorage.setItem('accessToken', data.token);
           localStorage.setItem('user', data.currentUser.userId);
           localStorage.setItem('email', data.currentUser.email);
+          localStorage.setItem('role', data.currentUser.role);
           this.fetchUserCart(data.token);
           this.USER_LOGIN();
+          this.SET_ROLE(localStorage.getItem('role'));
           this.$router.push({ name: 'home' });
           alertify.success('Welcome to ECM');
         })

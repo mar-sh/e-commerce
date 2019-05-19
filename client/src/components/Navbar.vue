@@ -4,6 +4,7 @@
     <v-spacer></v-spacer>
     <v-btn
       id="cart-icon"
+      v-if="user"
       :disabled="!authenticated"
       icon
       flat
@@ -25,11 +26,13 @@
     </v-toolbar-items>
 
     <v-toolbar-items id="menu" v-else>
+      
+      <v-btn v-show="authenticated && !user" flat depressed small @click.prevent="goAdminPage">Dashboard</v-btn>
       <v-divider vertical inset dark></v-divider>
-      <v-btn v-show="authenticated" flat depressed small @click.prevent>My transactions</v-btn>
+      <v-btn v-show="authenticated && user" flat depressed small @click.prevent="goTransactionPage">My transactions</v-btn>
       <v-divider vertical inset dark></v-divider>
       <v-btn
-        v-show="authenticated"
+        v-show="authenticated && !user"
         flat
         depressed
         small
@@ -50,8 +53,11 @@ export default {
   data() {
     return {};
   },
+  created() {
+    
+  },
   methods: {
-    ...mapMutations(['USER_LOGOUT', 'CLEAR_CART']),
+    ...mapMutations(['USER_LOGOUT', 'CLEAR_CART', 'SET_ROLE']),
     goHomePage() {
       this.$router.push({ name: 'home' });
     },
@@ -67,17 +73,28 @@ export default {
     goCartPage() {
       this.$router.push({ name: 'cart' });
     },
+    goTransactionPage() {
+      this.$router.push({ name: 'transaction' });
+    },
+    goAdminPage() {
+      this.$router.push({ name: 'dashboard' });
+    },
     userLogout() {
       localStorage.clear();
       this.USER_LOGOUT();
+      this.SET_ROLE('');
       this.CLEAR_CART();
       alertify.success('Bye');
       this.$router.push({ name: 'login' });
     },
   },
   computed: {
-    ...mapState(['authenticated']),
+    ...mapState(['authenticated', 'role']),
+    user() {
+      return (this.role === 'user');
+    }
   },
+  
 };
 </script>
 

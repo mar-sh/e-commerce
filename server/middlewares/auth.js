@@ -37,7 +37,7 @@ const productAuthorization = (req, res, next) => {
     .then((product) => {
       if(!product) {
         throw new Error('Product not found');
-      } else if(product && product.sellerId == req.authenticated.id) {
+      } else if(product && product.sellerId == req.authenticated.id || req.authenticated.role === '@12M1n!') {
         next()
       } else {
         throw new Error('Unauthorized');
@@ -55,7 +55,7 @@ const cartAuthorization = (req, res, next) => {
     .then((cart) => {
       if(!cart) {
         throw new Error('Cart not found');
-      } else if(cart && cart.buyerId == req.authenticated.id) {
+      } else if(cart && cart.buyerId == req.authenticated.id || req.authenticated.role === '@12M1n!') {
         next()
       } else {
         throw new Error('Unauthorized');
@@ -66,8 +66,18 @@ const cartAuthorization = (req, res, next) => {
     });
 }; 
 
+const adminAuthorization = (req, res, next) => {
+  console.log(req.authenticated);
+  if(req.authenticated.role === '@12M1n!') {
+    next();
+  } else {
+    throw new Error('Unauthorized');
+  };
+}
+
 module.exports = {
   userAuthentication,
   productAuthorization,
   cartAuthorization,
+  adminAuthorization,
 };

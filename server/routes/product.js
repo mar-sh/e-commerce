@@ -12,6 +12,7 @@ const {
 const {
   userAuthentication,
   productAuthorization,
+  adminAuthorization,
 } = authMiddleware;
 
 const {
@@ -24,10 +25,10 @@ const {
 
 const router = express.Router();
 
-router.post('/', userAuthentication, upload.single('image'), sendUploadToGCS, postCreateProduct);
+router.post('/', userAuthentication, adminAuthorization, upload.single('image'), sendUploadToGCS, postCreateProduct);
 router.get('/', getAllProducts);
 router.get('/:id', getProductById);
-router.put('/:id', userAuthentication, productAuthorization, putEditProductById);
+router.put('/:id', userAuthentication, productAuthorization, upload.single('image'), sendUploadToGCS, putEditProductById);
 router.delete('/:id', userAuthentication, productAuthorization, deleteProductById);
 
 module.exports = router;
