@@ -17,7 +17,7 @@
 11|/carts/:id|GET |```headers: {Authorization: accessToken}``` | ```status(204), body: none ``` |  Get a cart by id |
 12|/transactions|POST |```headers: {Authorization: accessToken}, body:{ cartId, userId, userAddress, userContact, totalCharge }``` | ```status(201), body: {transaction: {..., status, confirmed}} ``` |  Create a new transaction(checkout)|
 13|/transactions|GET |```headers: {Authorization: accessToken(admin)}``` | ```status(200), body: transactions: [{tx}, {tx}] ``` |  Get all transactions( admin only ) |
-14|/transactions/:id|PATCH |```headers: {Authorization: accessToken}, body: { status: (delivering || delivered || completed) || confirmed: true } ``` | ```status(200), body: {updated transaction} ``` |  Edit transaction status |
+14|/transactions/:id|PATCH |```headers: {Authorization: accessToken}, body: { status: (delivering or delivered or completed),  confirmed: true } ``` | ```status(200), body: {updated transaction} ``` |  Edit transaction status |
 15|/transactions/admin|GET |```headers: {Authorization: accessToken}``` | ```status(200), body: [{tx}, {tx}] ``` |  Get all transactions(admin only) |
 16|/carts|DELETE |```headers: {Authorization: accessToken}``` | ```status(204), body: none ``` |  Delete all carts(admin only) |
 
