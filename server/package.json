@@ -1,0 +1,42 @@
+{
+  "name": "e-commerce",
+  "version": "1.0.0",
+  "description": "## Endpoint",
+  "main": "server.js",
+  "scripts": {
+    "test": "NODE_ENV=test mocha --sort --exit",
+    "start": "node server.js",
+    "dev": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mar-sh/e-commerce.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mar-sh/e-commerce/issues"
+  },
+  "homepage": "https://github.com/mar-sh/e-commerce#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "chalk": "^2.4.2",
+    "dotenv": "^8.0.0",
+    "mocha": "^6.1.4"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "^2.5.0",
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.1",
+    "lusca": "^1.6.1",
+    "moment": "^2.24.0",
+    "mongoose": "^5.5.7",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.1"
+  }
+}
