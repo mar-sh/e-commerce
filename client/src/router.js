@@ -1,15 +1,15 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
-import Register from './views/Register.vue';
-import Login from './views/Login.vue';
-import ProductAdd from './views/ProductAdd.vue';
-import ProductDetail from './views/ProductDetail.vue';
-import ProductEdit from './views/ProductEdit.vue';
-import Cart from './views/Cart.vue';
-import CartCheckout from './views/CartCheckout.vue';
-import Transaction from './views/Transaction.vue';
-import AdminDashboard from './views/AdminDashboard.vue';
+// import Home from './views/Home.vue';
+// import Register from './views/Register.vue';
+// import Login from './views/Login.vue';
+// import ProductAdd from './views/ProductAdd.vue';
+// import ProductDetail from './views/ProductDetail.vue';
+// import ProductEdit from './views/ProductEdit.vue';
+// import Cart from './views/Cart.vue';
+// import CartCheckout from './views/CartCheckout.vue';
+// import Transaction from './views/Transaction.vue';
+// import AdminDashboard from './views/AdminDashboard.vue';
 
 Vue.use(Router);
 
@@ -20,54 +20,54 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home,
+      component: () => import(/* webpackChunkName: "about" */ './views/Home.vue'),
     },
     {
       path: '/register',
       name: 'register',
-      component: Register,
+      component: () => import(/* webpackChunkName: "about" */ './views/Register.vue'),
     },
     {
       path: '/login',
       name: 'login',
-      component: Login,
+      component: () => import(/* webpackChunkName: "about" */ './views/Login.vue'),
     },
     {
       path: '/add-product',
       name: 'add-product',
-      component: ProductAdd,
+      component: () => import(/* webpackChunkName: "about" */ './views/ProductAdd.vue'),
     },
     {
       path: '/product/:id',
       name: 'product',
-      component: ProductDetail,
+      component: () => import(/* webpackChunkName: "about" */ './views/ProductDetail.vue'),
     },
     {
       path: '/edit-product/:id',
       name: 'edit-product',
-      component: ProductEdit,
+      component: () => import(/* webpackChunkName: "about" */ './views/ProductEdit.vue'),
     },
     {
       path: '/cart',
       name: 'cart',
-      component: Cart,
+      component: () => import(/* webpackChunkName: "about" */ './views/Cart.vue'),
       children: [
         {
           path: ':id',
           name: 'cart-checkout',
-          component: CartCheckout,
+          component: () => import(/* webpackChunkName: "about" */ './views/CartCheckout.vue'),
         },
       ],
     },
     {
       path: '/transactions',
       name: 'transaction',
-      component: Transaction,
+      component: () => import(/* webpackChunkName: "about" */ './views/Transaction.vue'),
     },
     {
       path: '/admin/dashboard',
       name: 'dashboard',
-      component: AdminDashboard,
+      component: () => import(/* webpackChunkName: "about" */ './views/AdminDashboard.vue'),
     },
   ],
 });
